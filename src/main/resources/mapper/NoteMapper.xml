@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.akicat.noteshareremake.mapper.NoteMapper">
+    <select id="getNoteFormSubject" resultType="Note">
+        select * from t_note where subject_id = #{id}
+    </select>
+    <select id="getNoteFormNoteId" resultType="Note">
+        select * from t_note where note_id = #{id}
+    </select>
+    <update id="uploadNote" parameterType="Note">
+        insert into t_note(is_free,subject_id,pic_path,user_id,note_name,upload_date,upload_code)
+        values (#{is_free},#{subject_id},#{pic_path},#{user_id},#{note_name},#{upload_date},#{upload_code})
+    </update>
+    <select id="noteDetailFromId" resultType="NoteDetail">
+        select * from t_note where note_id = #{note_id}
+    </select>
+    <delete id="delNoteFromNoteCode" parameterType="String">
+        DELETE
+        from t_note
+        where upload_code = #{noteCode}
+    </delete>
+    <select id="getNoteFromNoteNameLike" resultType="Note">
+        select * from t_note where note_name LIKE #{noteName}
+    </select>
+</mapper>

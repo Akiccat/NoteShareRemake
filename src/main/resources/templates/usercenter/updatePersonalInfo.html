@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改个人信息</title>
+    <script th:src="@{/js/jquery-1.11.3.js}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script>
+        function UpdateUserInfo() {
+            var user_name = $("#userName").val();
+            var user_sex = $("#userSex").val();
+            var user_age = $("#userAge").val();
+            var user_email = $("#userEmail").val();
+            var user_id = $("#userId").val();
+            $.post("/updatePersonalInfo.action", {user_name,user_sex,user_age,user_email,user_id},
+                function (result) {
+                    $('#msgModal').modal({backdrop: 'static', keyboard: false});
+                    if (result.update == true) {
+                        $("#msgTitle").html("更新成功");
+                        $("#msgBody").html("用户数据更新了");
+                        $("#msgModal").modal();
+                    } else {
+                        $("#msgTitle").html("更新失败");
+                        $("#msgBody").html("数据出现了错误");
+                        $("#msgModal").modal();
+                    }
+                }, "json");
+        }
+
+    </script>
+</head>
+<style>
+    em {
+        background-color: #ff8c31;
+        border-radius: 30px;
+        margin-left: 50px;
+        font-size: 20px;
+    }
+
+    #note {
+        margin-left: 40px;
+        margin-top: 34px;
+        border-radius: 30px;
+    }
+
+
+    .text-center {
+        text-align: center
+    }
+
+
+</style>
+<body>
+
+<br/>
+<h2>
+    &nbsp;&nbsp;&nbsp;<strong th:text="${session.USER_SESSION.user_name}" th:if="${session.USER_SESSION.user_name!=null}"></strong>&nbsp;您好,
+    <small>您正在查看用户中心</small>
+</h2>
+<br/>
+<div style="background-color: #ced4da;border-radius: 25px;margin-top: -25px;" class="hero-unit">
+    <h1 style="font-size: xxx-large">
+        <br/>
+        &nbsp;&nbsp;&nbsp;<strong>用户中心</strong>
+        <br/>&nbsp;&nbsp;&nbsp;<small>Check UserCenter</small>
+        <br/>
+    </h1>
+    <h3 style="font-size: large">
+        <em>NoteShare</em>
+    </h3>
+    <br/>
+    <br/>
+</div>
+
+
+<div>
+    <div id="1"
+         style="background-color: #afdd22;border-radius: 25px;margin-bottom: -10px;margin-top: -20px;float: left;width: 50%">
+        <div style="margin-left: 40px;">
+            <br/>
+            <h4 style="text-align: center; margin-top: 8px;font-style: oblique"><a
+                    th:href="@{/usercenter.info}" style="color: black">修改个人信息</a>
+            </h4>
+        </div>
+        <br/>
+    </div>
+    <div id="2"
+         style="background-color: #fa8c35;border-radius: 25px;margin-bottom: -10px;margin-top: -20px;float: right;width: 50%">
+        <div style="margin-left: 40px;">
+            <br/>
+            <h4 style="text-align: center; margin-top: 8px;font-style: oblique"><a
+                    th:href="@{/usercenter.password}"
+                    style="color: black;">修改密码</a></h4>
+        </div>
+        <br/>
+    </div>
+
+
+    <div style="background-color: #afdd22;
+        border-radius: 5px;margin-top: -10px;z-index: 2;" class="col-md-12">
+        <div id="note" class="col-md-12">
+            <div class="text-center">
+                <div class="col-md-8" style="margin-left: 14% ">
+                    <div class="row" >
+                            <div class="form-group">
+                                <label for="userName"> 用户名 </label>
+                                <input class="form-control" name="userName" id="userName" th:type="text"
+                                       th:value="${userInfo.user_name}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="userSex"> 性别 </label>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="userSex" id="sex1"
+                                               value="0"  th:checked="${userInfo.user_sex==0?'checked':''}"> 男
+                                    </label> <label>
+                                    <input type="radio" name="userSex" id="sex2"
+                                           value="1" th:checked="${userInfo.user_sex==1?'checked':''}"> 女
+                                </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail"> 年龄</label>
+                                <input class="form-control" name="userAge" id="userAge" type="number"
+                                       th:value="${userInfo.user_age}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail"> 邮箱</label>
+                                <input class="form-control" name="userEmail" id="userEmail" type="email"
+                                       th:value="${userInfo.user_email}"/>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="button" onclick="UpdateUserInfo()">确定</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 登陆情况信息提示模态框 -->
+<div class="modal fade" id="msgModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title" id="msgTitle">
+
+                </h4>
+            </div>
+            <div class="modal-body" id="msgBody">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal" onclick="window.location.reload();">关闭窗口</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

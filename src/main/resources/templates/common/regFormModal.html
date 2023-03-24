@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <title>Title</title>
+    <script>
+        function getValue() {
+            // method 1
+            const radio = document.getElementsByName("sex");
+            console.log(radio);
+            for (let i = 0; i < radio.length; i++) {
+                if (radio[i].checked) {
+                    return radio[i].value;
+                }
+            }
+        }
+    </script>
+    <script>
+        function register() {
+            var userName = $("#userName").val();
+            var userPass = $("#passWord").val();
+            var userAge = $("#age").val();
+            var userSex = getValue();
+            var userEmail = $("#email").val();
+            var userArea = $("#area").val();
+            $('#regFormModal').modal({backdrop: 'static', keyboard: false});
+            $.post("/reg.action", {
+                    user_name: userName,
+                    user_pass: userPass,
+                    user_sex: userSex,
+                    user_age: userAge,
+                    user_email: userEmail,
+                    user_area: userArea,
+                },
+                function (result) {
+                    if (result.reg == true) {
+                        $("#msgTitle").html("注册成功");
+                        $("#msgBody").html("请保存好您的用户名和密码");
+                        $("#msgModal").modal();
+                        $('#regFormModal').modal('hide');
+                    } else {
+                      $("#msgTitle").html("注册失败!");
+                      $("#msgBody").html("请检查您的个人信息");
+                      $("#msgModal").modal();
+                      $('#regFormModal').modal('hide');
+                    }
+                }, "json");
+        }
+
+
+    </script>
+</head>
+<body>
+<div class="modal fade" id="regFormModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <form role="form" action="reg.action" method="post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button"
+                            data-dismiss="modal">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">用户注册</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label>用户名</label><label for="userName"></label><input type="text" class="form-control"
+                                                                                  id="userName"/>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label><label for="passWord"></label><input type="password" class="form-control"
+                                                                                id="passWord"/>
+                    </div>
+                    <div class="form-group">
+                        <label>性别:</label><br/>
+                        <label>
+                            男
+                            <input type="radio" name="sex" value="1" onclick="getValue()"/>
+                        </label>&nbsp;&nbsp;&nbsp;
+                        <label>
+                            女
+                            <input type="radio" name="sex" value="0" onclick="getValue()"/>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>年龄</label><label for="age"></label><input type="text" class="form-control" id="age"/>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label><label for="email"></label><input type="text" class="form-control"
+                                                                             id="email"/>
+                    </div>
+                    <div class="form-group">
+                        <label>区域</label><label for="area"></label><input type="text" class="form-control" id="area"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-primary" type="button"
+                            onclick="register()">注册
+                    </button>
+                    <button class="btn btn-default" type="button"
+                            data-dismiss="modal">关闭窗口
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 登陆情况信息提示模态框 -->
+<div class="modal fade" id="msgModal" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" type="button" data-dismiss="modal">
+                    ×
+                </button>
+                <h4 class="modal-title" id="msgTitle">
+
+                </h4>
+            </div>
+            <div class="modal-body" id="msgBody">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" type="button" data-dismiss="modal">关闭窗口</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

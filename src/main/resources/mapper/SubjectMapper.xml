@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.akicat.noteshareremake.mapper.SubjectMapper">
+    <select id="getSubjectFromId" resultType="Subject">
+        select *
+        from t_subject
+        where subject_id = #{subject_id}
+    </select>
+
+    <select id="getSubjectList" resultType="Subject">
+        select * from t_subject
+    </select>
+</mapper>

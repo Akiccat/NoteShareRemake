@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.akicat.noteshareremake.mapper.PayMapper">
+    <select id="getPayDetailFromNoteId" resultType="PayDetail">
+        SELECT *
+        from t_pay
+        where note_id = #{note_id} and state = 2
+    </select>
+    <insert id="insertPayDetail" parameterType="PayDetail">
+        insert into t_pay(dst_userid, src_userid, pay_code, word, note_code, note_id, pay_date, price, state)
+        values (#{dst_userid}, #{src_userid}, #{pay_code}, #{word}, #{note_code}, #{note_id}, #{pay_date}, #{price},
+                #{state})
+    </insert>
+    <update id="updatePayState" parameterType="String">
+        update t_pay
+        set state = 2
+        where pay_code = #{payCode}
+    </update>
+
+</mapper>
